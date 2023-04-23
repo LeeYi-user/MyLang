@@ -88,17 +88,17 @@ void irToHack(char *fileName) {
     }
     else if (eq(p->op, "label")) fprintf(fp, "(L%d)", p->label);
     else if (eq(p->op, "goto")) fprintf(fp, "@L%d\n0;JMP\n", p->label);
-    else if (eq(p->op, "if-goto")) fprintf(fp, "@t%d\nD=M\n@L%d\nD;JEQ\n", p->t, p->label);
-    else if (eq(p->op, "ifnot-goto")) fprintf(fp, "@t%d\nD=M\n@L%d\nD;JNE\n", p->t, p->label);
+    else if (eq(p->op, "if-goto")) fprintf(fp, "@t%d\nD=M\n@L%d\nD;JNE\n", p->t, p->label);
+    else if (eq(p->op, "ifnot-goto")) fprintf(fp, "@t%d\nD=M\n@L%d\nD;JEQ\n", p->t, p->label);
     else {
       char opAsm[100], *op=p->op;
       if (strcmp(op, "<")==0) sprintf(opAsm, "D=D-M\n@NF\nD=D&M\n");             // <
-      else if (strcmp(op, "<=")==0) sprintf(opAsm, "D=M-D\n@NF\nD=D&A\nD=!D"); // <=   // > 的相反
+      else if (strcmp(op, "<=")==0) sprintf(opAsm, "D=M-D\n@NF\nD=D&M\nD=!D"); // <=   // > 的相反
       else if (strcmp(op, "==")==0) sprintf(opAsm, "D=D-M\nD=!D\n");                  // ==   // != 的相反
       else if (strcmp(op, "!=")==0) sprintf(opAsm, "D=D-M\n");                        // !=
-      else if (strcmp(op, ">")==0) sprintf(opAsm, "D=M-D\n@NF\nD=D&A\n");      // >    // 注意：是 D=M-D
-      else if (strcmp(op, ">=")==0) sprintf(opAsm, "D=D-M\n@NF\nD=D&A\nD=!D\n"); // >=   // < 的相反
-      else sprintf(opAsm, "%s", op);
+      else if (strcmp(op, ">")==0) sprintf(opAsm, "D=M-D\n@NF\nD=D&M\n");      // >    // 注意：是 D=M-D
+      else if (strcmp(op, ">=")==0) sprintf(opAsm, "D=D-M\n@NF\nD=D&M\nD=!D\n"); // >=   // < 的相反
+      else sprintf(opAsm, "D=D+M");
       fprintf(fp, "@t%d\nD=M\n@t%d\n%s\n@t%d\nM=D\n", p->t1, p->t2, opAsm, p->t);
     }
     fprintf(fp, "\n");

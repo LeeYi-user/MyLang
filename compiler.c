@@ -80,7 +80,7 @@ void WHILE() {
   skip("while");
   skip("(");
   int e = E();
-  irEmitIfGoto(e, whileBegin);
+  irEmitIfNotGoto(e, whileEnd);
   skip(")");
   STMT();
   irEmitGoto(whileBegin);
