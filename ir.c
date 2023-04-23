@@ -52,6 +52,17 @@ void irPrint(IR *p) {
   printf("\n");
 }
 
+void irFprint(FILE *fp, IR *p) {
+  if (eq(p->op, "s=t")) fprintf(fp, "%s = t%d", p->s, p->t);
+  else if (eq(p->op, "t=s")) fprintf(fp, "t%d = %s", p->t, p->s);
+  else if (eq(p->op, "label")) fprintf(fp, "(L%d)", p->label);
+  else if (eq(p->op, "goto")) fprintf(fp, "goto L%d", p->label);
+  else if (eq(p->op, "if-goto")) fprintf(fp, "if t%d goto L%d", p->t, p->label);
+  else if (eq(p->op, "ifnot-goto")) fprintf(fp, "ifnot t%d goto L%d", p->t, p->label);
+  else fprintf(fp, "t%d = t%d %s t%d", p->t, p->t1, p->op, p->t2);
+  fprintf(fp, "\n");
+}
+
 void irDump() {
   printf("============ irDump ============\n");
   for (int i=0; i<irTop; i++) {
@@ -69,7 +80,7 @@ void irToHack(char *fileName) {
   fprintf(fp, "// init NF (negative flag mask)\n@32767\nD=A\n@NF\nM=D\n");
   for (int i=0; i<irTop; i++) {
     IR *p = &ir[i];
-    fprintf(fp, "// "); irPrint(p);
+    fprintf(fp, "// "); irFprint(fp, p);
     if (eq(p->op, "s=t")) fprintf(fp, "@t%d\nD=M\n@%s\nM=D\n", p->t, p->s);
     else if (eq(p->op, "t=s")) {
       char AM = (isdigit(p->s[0])) ? 'A':'M';
