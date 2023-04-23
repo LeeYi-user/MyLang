@@ -32,5 +32,6 @@
 *.app
 
 # Executables in vm
+*.asm
 *.hack
 *.bin

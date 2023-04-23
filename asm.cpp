@@ -155,10 +155,13 @@ void pass2(char* inFile, char* hackFile, char* binFile) {
 }
 
 void assemble(char *file) {
+  string filename = file;
+  string str = filename.substr(0, filename.find(".asm"));
+  char* subtext = const_cast<char*>(str.c_str());
   char inFile[100], hackFile[100], binFile[100];
-  sprintf(inFile, "%s.asm", file);
-  sprintf(hackFile, "%s.hack", file);
-  sprintf(binFile, "%s.bin", file);
+  sprintf(inFile, "%s.asm", subtext);
+  sprintf(hackFile, "%s.hack", subtext);
+  sprintf(binFile, "%s.bin", subtext);
   // symDump(&symMap);
   pass1(inFile);
   // symDump(&symMap);
