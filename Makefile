@@ -13,6 +13,18 @@ asm: asm.cpp
 vm: vm.c
 	$(CC) $^ -o $@
 
+ifdef OS
+    RM = del /Q
+    FixPath = $(subst /,\,$1)
+else
+    ifeq ($(shell uname), Linux)
+        RM = rm -f
+        FixPath = $1
+    endif
+endif
+
 clean:
-	del *.exe *.asm *.hack *.bin
-	del .\test\*.asm .\test\*.hack .\test\*.bin
+	$(RM) $(TARGET) *.exe *.asm *.hack *.bin
+	$(RM) $(call FixPath,test/*.asm)
+	$(RM) $(call FixPath,test/*.hack)
+	$(RM) $(call FixPath,test/*.bin)

@@ -26,6 +26,11 @@
 *.a
 *.lib
 
+# Targets
+compiler
+asm
+vm
+
 # Executables
 *.exe
 *.out

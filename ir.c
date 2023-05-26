@@ -71,11 +71,9 @@ void irDump() {
 }
 
 void irToHack(char *fileName) {
-  char subtext[SMAX];
-  strncpy(subtext, fileName, strlen(fileName) - 2);
-  subtext[strlen(subtext) - 1] = '\0';
-  strcat(subtext, ".asm");
-  FILE *fp = fopen(subtext, "w+");
+  strtok(fileName, ".");
+  strcat(fileName, ".asm");
+  FILE *fp = fopen(fileName, "w+");
 
   fprintf(fp, "// init NF (negative flag mask)\n@32767\nD=A\n@NF\nM=D\n");
   for (int i=0; i<irTop; i++) {
