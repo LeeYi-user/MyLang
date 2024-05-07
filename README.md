@@ -1,3 +1,3 @@
 # MyLang
 
-Just a school project.
+Just a prototype.
